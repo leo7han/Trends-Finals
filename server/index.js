@@ -1,10 +1,10 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import helmet from 'helmet';
-import morgan from 'morgan';
+import express from "express";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
+import helmet from "helmet";
+import morgan from "morgan";
 import clientRoutes from "./routes/client.js";
 import generalRoutes from "./routes/general.js";
 import managementRoutes from "./routes/management.js";
@@ -12,53 +12,92 @@ import salesRoutes from "./routes/sales.js";
 
 // data imports
 import User from "./models/User.js";
-import Product from './models/Product.js';
-import ProductStat from './models/ProductStat.js';
-import Transaction from './models/Transaction.js';
-import { dataUser, dataProduct, dataProductStat, dataTransaction } from "./data/index.js";
+import Product from "./models/Product.js";
+import ProductStat from "./models/ProductStat.js";
+import Transaction from "./models/Transaction.js";
+import OverallStat from "./models/OverallStat.js";
+import AffiliateStat from "./models/AffiliateStat.js";
+import {
+  dataUser,
+  dataProduct,
+  dataProductStat,
+  dataTransaction,
+  dataOverallStat,
+  dataAffiliateStat,
+} from "./data/index.js";
 
-/* Configurations */
+//when npm run is called this is where it starts
+
+/* CONFIGURATION */
 dotenv.config();
-console.log('Starting server...');
-
 const app = express();
 app.use(express.json());
 app.use(helmet());
-app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}));
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
-/* Routes */
+/* ROUTES */
 app.use("/client", clientRoutes);
 app.use("/general", generalRoutes);
 app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
 
-console.log('MongoDB URI:', process.env.MONGO_URL);
-console.log('Connecting to MongoDB...');
-
-/* Mongoose Setup */
+/* MONGOOSE SETUP */
 const PORT = process.env.PORT || 9000;
 mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => {
-    console.log('MongoDB connected successfully to test database');
-    const PORT = process.env.PORT || 5001;
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(async () => {
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
 
-    // Product.insertMany(dataProduct);
-    // ProductStat.insertMany(dataProductStat);
-    // User.insertMany(dataUser);
-    // Transaction.insertMany(dataTransaction);
+    /* ONLY ADD DATA ONE TIME */
+    /*
+    try{
+      AffiliateStat.insertMany(dataAffiliateStat);
+      console.log("Affiliates succeeded")
+    } catch (err){
+      console.error("Affiliates failed")
+    }
+
+    try{
+      OverallStat.insertMany(dataOverallStat);
+      console.log("Overall succeeded")
+    } catch (err){
+      console.error("Overall failed")
+    }
+
+    try{
+      Product.insertMany(dataProduct);
+      console.log("Product succeeded")
+    } catch (err){
+      console.error("Product failed")
+    }
+
+    try{
+      ProductStat.insertMany(dataProductStat);
+      console.log("ProductStat succeeded")
+    } catch (err){
+      console.error("ProductStat failed")
+    }
+
+    try{
+      Transaction.insertMany(dataTransaction);
+      console.log("Transaction succeeded")
+    } catch (err){
+      console.error("Trasnaction failed")
+    }
+    try{
+      User.insertMany(dataUser);
+      console.log("User succeeded")
+    } catch (err){
+      console.error("User failed")
+    }
+    */
+    
   })
   .catch((error) => console.log(`${error} did not connect`));
-
-app.get('/', (req, res) => res.send('Server is running'));
-
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (err) => {
-  console.error('Unhandled Rejection:', err);
-  process.exit(1);
-});

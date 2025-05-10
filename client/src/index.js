@@ -1,26 +1,27 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import { configureStore } from '@reduxjs/toolkit';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import { configureStore } from "@reduxjs/toolkit";
 import globalReducer from "state";
-import { Provider } from 'react-redux';
-import { setupListeners } from '@reduxjs/toolkit/query';
+import { Provider } from "react-redux";
+import { setupListeners } from "@reduxjs/toolkit/query";
 import { api } from "state/api";
 
+//when npm run is called this is where it starts
 const store = configureStore({
   reducer: {
     global: globalReducer,
     [api.reducerPath]: api.reducer,
   },
-  middleware: (getDefault) => getDefault().concat(api.middleware)
+  middleware: (getDefault) => getDefault().concat(api.middleware),
 });
 setupListeners(store.dispatch);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Provider store = {store}>
+    <Provider store={store}>
       <App />
     </Provider>
   </React.StrictMode>
