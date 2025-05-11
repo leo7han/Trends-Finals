@@ -16,9 +16,10 @@ import Monthly from "scenes/monthly";
 import Breakdown from "scenes/breakdown";
 import Admin from "scenes/admin";
 import Performance from "scenes/performance";
-import Settings from "scenes/settings";
 import CustomersCreate from "scenes/customerscreate";
 import UpdateCustomer from "scenes/customersupdate";
+import Settings from "scenes/settings";
+
 
 
 function App() {
@@ -48,6 +49,8 @@ function App() {
 
               <Route path="/settings" element={<Settings />} />
 
+              <Route path="/customers/create" element={<CustomersCreate />} />
+              <Route path="/customers/update/:customerId" element={<UpdateCustomer />} />
               <Route path="/customers/create" element={<CustomersCreate />} />
               <Route path="/customers/update/:customerId" element={<UpdateCustomer />} />
             </Route>
