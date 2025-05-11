@@ -1,9 +1,8 @@
-// color design tokens export
 export const tokensDark = {
   grey: {
-    0: "#ffffff", // manually adjusted
-    10: "#f6f6f6", // manually adjusted
-    50: "#f0f0f0", // manually adjusted
+    0: "#ffffff",
+    10: "#f6f6f6",
+    50: "#f0f0f0",
     100: "#e0e0e0",
     200: "#c2c2c2",
     300: "#a3a3a3",
@@ -13,36 +12,52 @@ export const tokensDark = {
     700: "#3d3d3d",
     800: "#292929",
     900: "#141414",
-    1000: "#000000", // manually adjusted
+    1000: "#000000",
   },
   primary: {
-    // blue
-    100: "#d3d4de",
-    200: "#a6a9be",
-    300: "#7a7f9d",
-    400: "#4d547d",
-    500: "#21295c",
-    600: "#191F45", // manually adjusted
-    700: "#141937",
-    800: "#0d1025",
-    900: "#070812",
+    // Adjusted olive-green (lighter for better contrast)
+    100: "#e2e6d8",
+    200: "#c5cdb1",
+    300: "#a8b48a",
+    400: "#8b9b63",
+    500: "#556b3d",  // Main olive (lightened from #3d5033)
+    600: "#445631",
+    700: "#334025",
+    800: "#222b18",
+    900: "#11150c",
   },
   secondary: {
-    // yellow
-    50: "#f0f0f0", // manually adjusted
-    100: "#fff6e0",
-    200: "#ffedc2",
-    300: "#ffe3a3",
-    400: "#ffda85",
-    500: "#ffd166",
-    600: "#cca752",
-    700: "#997d3d",
-    800: "#665429",
-    900: "#332a14",
+    // Darker sage green for better visibility
+    50: "#e8f0e7",
+    100: "#c5d9c3",
+    200: "#8bb387",
+    300: "#518d4b",
+    400: "#3a6d3a",  // Darker sage (was #4a7c59)
+    500: "#2e5c2e",
+    600: "#254a25",
+    700: "#1c381c",
+    800: "#132613",
+    900: "#0a140a",
   },
+  accent: {
+    // Warm terracotta remains
+    100: "#f5d6c9",
+    200: "#ebad93",
+    300: "#e1845d",
+    400: "#d75b27",
+    500: "#c44515",
+    600: "#9d3711",
+    700: "#76290d",
+    800: "#4e1b08",
+    900: "#270d04",
+  },
+  text: {
+    dark: "#e8e8e8",  // Warm off-white for dark mode
+    light: "#333333"  // Dark gray for light mode
+  }
 };
 
-// function that reverses the color palette
+// function that reverses the color palette (keep this unchanged)
 function reverseTokens(tokensDark) {
   const reversedTokens = {};
   Object.entries(tokensDark).forEach(([key, val]) => {
@@ -59,34 +74,42 @@ function reverseTokens(tokensDark) {
 }
 export const tokensLight = reverseTokens(tokensDark);
 
-// mui theme settings
+// mui theme settings (updated palette references)
 export const themeSettings = (mode) => {
   return {
     palette: {
       mode: mode,
       ...(mode === "dark"
         ? {
-            // palette values for dark mode
+            // DARK MODE - High contrast
             primary: {
               ...tokensDark.primary,
-              main: tokensDark.primary[400],
+              main: tokensDark.primary[500],  // Lightened olive
               light: tokensDark.primary[400],
             },
             secondary: {
               ...tokensDark.secondary,
-              main: tokensDark.secondary[300],
+              main: tokensDark.secondary[400],  // Darker sage
+            },
+            accent: {
+              ...tokensDark.accent,
+              main: tokensDark.accent[500],
             },
             neutral: {
               ...tokensDark.grey,
-              main: tokensDark.grey[500],
+              main: tokensDark.grey[300],  // Light gray for text
             },
             background: {
-              default: tokensDark.primary[600],
-              alt: tokensDark.primary[500],
+              default: tokensDark.primary[800],  // Darkest olive
+              alt: tokensDark.primary[700],
             },
+            text: {
+              primary: tokensDark.text.dark,  // Warm off-white
+              secondary: tokensDark.grey[300],
+            }
           }
         : {
-            // palette values for light mode
+            // LIGHT MODE - Natural tones
             primary: {
               ...tokensLight.primary,
               main: tokensDark.grey[50],
@@ -94,17 +117,25 @@ export const themeSettings = (mode) => {
             },
             secondary: {
               ...tokensLight.secondary,
-              main: tokensDark.secondary[600],
-              light: tokensDark.secondary[700],
+              main: tokensDark.secondary[400],  // Muted sage
+              light: tokensDark.secondary[300],
+            },
+            accent: {
+              ...tokensLight.accent,
+              main: tokensDark.accent[400],
             },
             neutral: {
               ...tokensLight.grey,
-              main: tokensDark.grey[500],
+              main: tokensDark.grey[600],
             },
             background: {
-              default: tokensDark.grey[0],
+              default: "#fafaf8",  // Warm white
               alt: tokensDark.grey[50],
             },
+            text: {
+              primary: tokensDark.text.light,
+              secondary: tokensDark.grey[700],
+            }
           }),
     },
     typography: {

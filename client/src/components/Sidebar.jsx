@@ -128,11 +128,11 @@ const Sidebar = ({
           }}
         >
           <Box width="100%">
-            <Box m="1.5rem 2rem 2rem 3rem">
-              <FlexBetween color={theme.palette.secondary.main}>
+            <Box m="1.5rem 2rem 2rem 1.65rem">
+              <FlexBetween color={theme.palette.secondary[100]}>
                 <Box display="flex" alignItems="center" gap="0.5rem">
-                  <Typography variant="h4" fontWeight="bold">
-                    ECOMVISION
+                  <Typography variant="h2" fontWeight="1000">
+                    SYLPHONEX
                   </Typography>
                 </Box>
                 {!isNonMobile && (
@@ -167,7 +167,7 @@ const Sidebar = ({
                             : "transparent",
                         color:
                           active === lcText
-                            ? theme.palette.primary[600]
+                            ? theme.palette.primary[900]
                             : theme.palette.secondary[100],
                       }}
                     >

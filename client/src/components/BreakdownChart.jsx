@@ -53,13 +53,13 @@ const BreakdownChart = ({ isDashboard = false }) => {
                 strokeWidth: 1,
               },
               text: {
-                fill: theme.palette.secondary[200],
+                fill: theme.palette.secondary[400],
               },
             },
           },
           legends: {
             text: {
-              fill: theme.palette.secondary[200],
+              fill: theme.palette.secondary[400],
             },
           },
           tooltip: {
@@ -83,7 +83,7 @@ const BreakdownChart = ({ isDashboard = false }) => {
           modifiers: [["darker", 0.2]],
         }}
         enableArcLinkLabels={!isDashboard}
-        arcLinkLabelsTextColor={theme.palette.secondary[200]}
+        arcLinkLabelsTextColor={theme.palette.secondary[400]}
         arcLinkLabelsThickness={2}
         arcLinkLabelsColor={{ from: "color" }}
         arcLabelsSkipAngle={10}

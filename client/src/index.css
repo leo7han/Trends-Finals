@@ -13,17 +13,13 @@ body,
   width: 10px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
-  background: #7a7f9d;
+  background: #666666; 
 }
-
-/* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #21295c;
+  background: #3d5033; /* Sage green */
+  border-radius: 5px;
 }
-
-/* Handle on Hover */
-::-webkit-scrollbar-track:hover {
-  background: #21295c;
+::-webkit-scrollbar-thumb:hover {
+  background: #4a7c59; /* Navy */
 }
