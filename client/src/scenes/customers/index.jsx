@@ -1,17 +1,40 @@
-import React from "react";
-import { Box, useTheme } from "@mui/material";
-import { useGetCustomersQuery } from "state/api";
+import React, { useState, useMemo } from "react";
+import { Box, useTheme, Button, TextField } from "@mui/material";
+import { useGetCustomersQuery, useDeleteCustomerMutation } from "state/api"; // Assuming useDeleteCustomerMutation is defined in your API hooks
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Customers = () => {
   const theme = useTheme();
-  //go to useGetCustomersQuery in state/api.js t
-  const { data, isLoading } = useGetCustomersQuery();
-  console.log("data", data);
+  const navigate = useNavigate();
+  const { data, isLoading, refetch } = useGetCustomersQuery();
+  const [deleteCustomer] = useDeleteCustomerMutation();
+  const [searchTerm, setSearchTerm] = useState("");
 
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
-  //format column names and which parts of the data they display via field
+  // Filter rows based on search term
+  const filteredData = useMemo(() => {
+    if (!searchTerm) return data || [];
+    return (data || []).filter((customer) => {
+      // Search across multiple fields
+      return (
+        customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        customer.phoneNumber.includes(searchTerm) ||
+        customer.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        customer.occupation.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        customer.role.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+  }, [data, searchTerm]);
+
+  // Column definitions
   const columns = [
     {
       field: "_id",
@@ -51,13 +74,67 @@ const Customers = () => {
       headerName: "Role",
       flex: 0.5,
     },
+    {
+      field: "delete",
+      headerName: "Delete",
+      flex: 0.5,
+      renderCell: (params) => {
+        const customerId = params.row._id; // Assuming your data has '_id' as the identifier
+        return (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => handleDelete(customerId)}
+          >
+            Delete
+          </Button>
+        );
+      },
+    },
   ];
 
+ const handleDelete = async (customerId) => {
+  if (!customerId) return;
 
-  //frontend display
+  try {
+    // Use the deleteCustomer mutation
+    const response = await deleteCustomer(customerId).unwrap();  // .unwrap() is used to handle the response
+    console.log("Customer deleted:", response);
+    refetch();  // Re-fetch data after deletion
+    alert('Customer deleted successfully!');
+  } catch (error) {
+    console.error("Error deleting customer:", error);
+    alert('Failed to delete customer. Please try again later.');
+  }
+};
+
+
   return (
     <Box m="1.5rem 2.5rem">
       <Header title="CUSTOMERS" subtitle="List of Customers" />
+
+      {/* Search Bar */}
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb="1rem">
+        <TextField
+          label="Search Customers"
+          variant="outlined"
+          size="small"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          fullWidth
+        />
+        <Box display="flex" justifyContent="flex-end" ml="1rem">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate("/customers/create")}
+          >
+            Add New Customer
+          </Button>
+        </Box>
+      </Box>
+
+      {/* DataGrid */}
       <Box
         mt="40px"
         height="75vh"
@@ -89,7 +166,7 @@ const Customers = () => {
         <DataGrid
           loading={isLoading || !data}
           getRowId={(row) => row._id}
-          rows={data || []}
+          rows={filteredData}  // Use filtered data
           columns={columns}
         />
       </Box>

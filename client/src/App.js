@@ -17,6 +17,9 @@ import Breakdown from "scenes/breakdown";
 import Admin from "scenes/admin";
 import Performance from "scenes/performance";
 import Settings from "scenes/settings";
+import CustomersCreate from "scenes/customerscreate";
+import UpdateCustomer from "scenes/customersupdate";
+
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -42,7 +45,11 @@ function App() {
               <Route path="/breakdown" element={<Breakdown />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/performance" element={<Performance />} />
+
               <Route path="/settings" element={<Settings />} />
+
+              <Route path="/customers/create" element={<CustomersCreate />} />
+              <Route path="/customers/update/:customerId" element={<UpdateCustomer />} />
             </Route>
           </Routes>
         </ThemeProvider>

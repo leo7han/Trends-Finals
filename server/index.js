@@ -54,7 +54,10 @@ mongoose
   })
   .then(async () => {
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+  })
+  .catch((error) => console.log(`${error} did not connect`));
 
+  
     /* ONLY ADD DATA ONE TIME */
     /*
     try{
@@ -98,6 +101,3 @@ mongoose
       console.error("User failed")
     }
     */
-    
-  })
-  .catch((error) => console.log(`${error} did not connect`));

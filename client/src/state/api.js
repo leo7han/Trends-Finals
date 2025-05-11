@@ -1,9 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-
-//REACT_APP_BASE_URL is the url api is requesting from
+// REACT_APP_BASE_URL is the URL the API is requesting from
 export const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }), // Make sure this is correctly set
   reducerPath: "adminApi",
   tagTypes: [
     "User",
@@ -26,21 +25,31 @@ export const api = createApi({
     rule of thumb the first / is the router's name, the second / is the function's name
     */
 
-    //changes url to url/general/user/id, routes controller, then calls server/controller/general
+    // Get a user by ID
     getUser: build.query({
       query: (id) => `general/user/${id}`,
       providesTags: ["User"],
     }),
 
-    //changes url to url/clients/products for server router then controller to end up at server/controller/clients
+    // Get all products
     getProducts: build.query({
       query: () => "client/products",
       providesTags: ["Products"],
     }),
+
+    // Get all customers
     getCustomers: build.query({
       query: () => "client/customers",
       providesTags: ["Customers"],
     }),
+
+    // Get a specific customer by ID
+    getCustomer: build.query({
+      query: (id) => `client/customers/${id}`, // Endpoint to get a specific customer by ID
+      providesTags: ["Customers"],
+    }),
+
+    // Get transactions with pagination and sorting
     getTransactions: build.query({
       query: ({ page, pageSize, sort, search }) => ({
         url: "client/transactions",
@@ -50,35 +59,65 @@ export const api = createApi({
       providesTags: ["Transactions"],
     }),
 
-    //changes url to url/client/geography, routes controller, then calls server/controller/client.js
+    // Get geography data
     getGeography: build.query({
       query: () => "client/geography",
       providesTags: ["Geography"],
     }),
 
-    //changes url to url/sales/sales, routes controller, then calls server/controller/sales.js
+    // Get sales data
     getSales: build.query({
       query: () => "sales/sales",
       providesTags: ["Sales"],
     }),
 
-    //changes url to url/management/admins, routes controller, then calls server/controller/management.js
+    // Get all admins
     getAdmins: build.query({
       query: () => "management/admins",
       providesTags: ["Admins"],
     }),
 
-    //changes url to url/management/performance/id, routes controller, then calls server/controller/management
+    // Get performance data for a specific user by ID
     getUserPerformance: build.query({
       query: (id) => `management/performance/${id}`,
       providesTags: ["Performance"],
     }),
 
-    //changes url to url/general/dashbord, routes controller, then calls server/controler/general.js
+    // Get dashboard data
     getDashboard: build.query({
       query: () => "general/dashboard",
       providesTags: ["Dashboard"],
     }),
+
+    // Add a new customer
+    addCustomer: build.mutation({
+      query: (customer) => ({
+        url: "/client/customers/create", // Make sure the route is correct here
+        method: "POST",
+        body: customer, // The customer object to be added
+      }),
+      // Invalidates "Customers" tag to refetch customer data
+      invalidatesTags: ["Customers"],
+    }),
+
+    // Update an existing customer by ID
+    updateCustomer: build.mutation({
+      query: (customer) => ({
+        url: `/client/customers/update/${customer.id}`, // Make sure this is the correct endpoint
+        method: "PUT", // Use PUT or PATCH depending on your backend
+        body: customer, // The customer object to be updated
+      }),
+      // Invalidates "Customers" tag to refetch customer data
+      invalidatesTags: ["Customers"],
+    }),
+
+      deleteCustomer: build.mutation({
+  query: (customerId) => ({
+    url: `client/customers/${customerId}`,
+    method: 'DELETE',
+  }),
+  invalidatesTags: ["Customers"],
+})
   }),
 });
 
@@ -86,10 +125,14 @@ export const {
   useGetUserQuery,
   useGetProductsQuery,
   useGetCustomersQuery,
+  useGetCustomerQuery, // Use this hook to fetch a specific customer by ID
   useGetTransactionsQuery,
   useGetGeographyQuery,
   useGetSalesQuery,
   useGetAdminsQuery,
   useGetUserPerformanceQuery,
   useGetDashboardQuery,
+  useAddCustomerMutation,
+  useUpdateCustomerMutation, // Use this hook to update a specific customer
+  useDeleteCustomerMutation
 } = api;
