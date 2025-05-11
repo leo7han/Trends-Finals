@@ -16,7 +16,7 @@ import Monthly from "scenes/monthly";
 import Breakdown from "scenes/breakdown";
 import Admin from "scenes/admin";
 import Performance from "scenes/performance";
-import Settings from "scenes/settingsPanel";
+import Settings from "scenes/settings";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);

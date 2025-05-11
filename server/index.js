@@ -89,7 +89,7 @@ mongoose
       Transaction.insertMany(dataTransaction);
       console.log("Transaction succeeded")
     } catch (err){
-      console.error("Trasnaction failed")
+      console.error("Transaction failed")
     }
     try{
       User.insertMany(dataUser);
