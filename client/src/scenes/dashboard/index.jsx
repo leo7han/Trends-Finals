@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
 import {
@@ -20,12 +20,61 @@ import BreakdownChart from "components/BreakdownChart";
 import OverviewChart from "components/OverviewChart";
 import { useGetDashboardQuery } from "state/api";
 import StatBox from "components/StatBox";
+import axios from 'axios';
 
 const Dashboard = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  //go to useGetDashboardQury in state/api.js
   const { data, isLoading } = useGetDashboardQuery();
+
+  const [settings, setSettings] = useState({
+    choroplethColor: 'green',
+    apiRequestLimit: 100,
+    backupFrequency: 'daily',
+    metricWeightSales: 50,
+    metricWeightCustomers: 50,
+    errorLogging: 'minimal',
+  });
+
+  // Fetch settings from MongoDB
+  // Replace the useEffect with this:
+useEffect(() => {
+  const fetchSettings = async () => {
+    try {
+      const response = await axios.get('/api/settings');
+      setSettings(response.data);
+    } catch (error) {
+      console.error('Error fetching settings:', error);
+    }
+  };
+  
+  fetchSettings();
+  
+  // Add real-time updates with WebSocket or polling
+  const interval = setInterval(fetchSettings, 5000); // Poll every 5 seconds
+  return () => clearInterval(interval);
+}, []);
+
+  // Define color scale for BreakdownChart based on settings
+  const colorScale = {
+    green: ['#4CAF50', '#81C784', '#A5D6A7', '#C8E6C9'],
+    blue: ['#1976D2', '#64B5F6', '#90CAF9', '#BBDEFB'],
+    red: ['#D32F2F', '#F44336', '#EF5350', '#E57373'],
+  }[settings.choroplethColor];
+
+  // Apply metric weighting to adjust displayed values
+  const weightedCustomers = data?.totalCustomers
+    ? Math.round(data.totalCustomers * (settings.metricWeightCustomers / 100))
+    : 0;
+  const weightedSalesToday = data?.todayStats?.totalSales
+    ? Math.round(data.todayStats.totalSales * (settings.metricWeightSales / 100))
+    : 0;
+  const weightedMonthlySales = data?.thisMonthStats?.totalSales
+    ? Math.round(data.thisMonthStats.totalSales * (settings.metricWeightSales / 100))
+    : 0;
+  const weightedYearlySales = data?.yearlySalesTotal
+    ? Math.round(data.yearlySalesTotal * (settings.metricWeightSales / 100))
+    : 0;
 
   const columns = [
     {
@@ -91,8 +140,8 @@ const Dashboard = () => {
       >
         {/* ROW 1 */}
         <StatBox
-          title="Total Customers"
-          value={data && data.totalCustomers}
+          title="Total Customers (Weighted)"
+          value={weightedCustomers}
           increase="+14%"
           description="Since last month"
           icon={
@@ -102,8 +151,8 @@ const Dashboard = () => {
           }
         />
         <StatBox
-          title="Sales Today"
-          value={data && data.todayStats.totalSales}
+          title="Sales Today (Weighted)"
+          value={weightedSalesToday}
           increase="+21%"
           description="Since last month"
           icon={
@@ -122,8 +171,8 @@ const Dashboard = () => {
           <OverviewChart view="sales" isDashboard={true} />
         </Box>
         <StatBox
-          title="Monthly Sales"
-          value={data && data.thisMonthStats.totalSales}
+          title="Monthly Sales (Weighted)"
+          value={weightedMonthlySales}
           increase="+5%"
           description="Since last month"
           icon={
@@ -133,8 +182,8 @@ const Dashboard = () => {
           }
         />
         <StatBox
-          title="Yearly Sales"
-          value={data && data.yearlySalesTotal}
+          title="Yearly Sales (Weighted)"
+          value={weightedYearlySales}
           increase="+43%"
           description="Since last month"
           icon={
@@ -191,7 +240,7 @@ const Dashboard = () => {
           <Typography variant="h6" sx={{ color: theme.palette.secondary[100] }}>
             Sales By Category
           </Typography>
-          <BreakdownChart isDashboard={true} />
+          <BreakdownChart isDashboard={true} colors={colorScale} />
           <Typography
             p="0 0.6rem"
             fontSize="0.8rem"

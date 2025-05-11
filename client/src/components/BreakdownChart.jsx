@@ -3,25 +3,42 @@ import { ResponsivePie } from "@nivo/pie";
 import { Box, Typography, useTheme } from "@mui/material";
 import { useGetSalesQuery } from "state/api";
 
-const BreakdownChart = ({ isDashboard = false }) => {
-  //go to useGetSalesQuery in state/api.js 
+const BreakdownChart = ({ isDashboard = false, choroplethColor = 'green' }) => {
   const { data, isLoading } = useGetSalesQuery();
   const theme = useTheme();
 
   if (!data || isLoading) return "Loading...";
 
-  const colors = [
-    theme.palette.secondary[500],
-    theme.palette.secondary[300],
-    theme.palette.secondary[300],
-    theme.palette.secondary[500],
-  ];
+  // Define color scales based on choroplethColor, using theme colors where possible
+  const colorScales = {
+    green: [
+      theme.palette.secondary[400], // #3a6d3a (darker sage)
+      theme.palette.secondary[300], // #518d4b
+      theme.palette.secondary[200], // #8bb387
+      theme.palette.secondary[100], // #c5d9c3 (lightest sage)
+    ],
+    blue: [
+      '#1976D2', // Dark blue
+      '#42A5F5',
+      '#64B5F6',
+      '#90CAF9', // Light blue
+    ],
+    red: [
+      '#B71C1C', // Dark red
+      '#D32F2F',
+      '#F44336',
+      '#EF9A9A', // Light red
+    ],
+  };
+
+  const colors = colorScales[choroplethColor] || colorScales['green'];
+
   const formattedData = Object.entries(data.salesByCategory).map(
     ([category, sales], i) => ({
       id: category,
       label: category,
       value: sales,
-      color: colors[i],
+      color: colors[i % colors.length], // Cycle through the colors
     })
   );
 
