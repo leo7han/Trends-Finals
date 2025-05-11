@@ -9,6 +9,29 @@ body,
   font-family: "Inter", sans-serif;
 }
 
+:root {
+  /* Primary Colors */
+  --primary-main: #2d572c;       /* Deep green (your existing) */
+  --primary-light: #518d4b;     /* Medium green */
+  --primary-lighter: #8bb387;   /* Light green */
+  
+  /* Secondary Colors */
+  --secondary-main: #3a6d3a;    /* Complementary green */
+  --secondary-light: #c5d9c3;   /* Very light green */
+  
+  /* Backgrounds */
+  --bg-default: #f5f9f4;        /* Off-white with green tint */
+  --bg-paper: #ffffff;          /* Pure white for cards */
+  
+  /* Text */
+  --text-primary: #1a3e1a;      /* Dark green for text */
+  --text-secondary: #5a7d5a;    /* Medium green for secondary text */
+  
+  /* Accents */
+  --accent-blue: #1976d2;       /* For interactive elements */
+  --accent-gold: #d4af37;       /* For highlights/important items */
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }

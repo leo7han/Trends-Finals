@@ -405,15 +405,16 @@ const SettingsPanel = () => {
       <Button
         variant="contained"
         size="large"
+        textAlign="center"
         onClick={handleSave}
         sx={{
           py: 2,
           px: 4,
           fontSize: '1.1rem',
-          fontWeight: 'bold'
+          fontWeight: 'bold',
         }}
       >
-        SAVE ALL SETTINGS
+        SAVE CHANGES
       </Button>
     </Box>
   );
