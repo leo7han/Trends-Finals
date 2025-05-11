@@ -1,7 +1,7 @@
-# Admin Dashboard Project
-Overview
+Admin Dashboard Project
+#Overview
 This project is an admin dashboard built with React and Redux Toolkit, designed to manage and visualize business data such as sales, products, customers, and geographic insights, styled with Material-UI in a dark/light theme.
-Project Structure
+#Project Structure
 
 client/: Frontend React application.
 src/scenes/: Contains page components (dashboard, products, customers, etc.).
@@ -15,7 +15,7 @@ controllers/: Route handlers for API endpoints.
 
 
 
-Setup Instructions
+#Setup Instructions
 
 Clone the repository:git clone <repository-url>
 cd <repository-name>
@@ -39,14 +39,14 @@ Frontend: cd client && npm start (runs on http://localhost:3000)
 
 
 
-State Management
+#State Management
 State is managed using Redux Toolkit in client/src/state:
 
 index.js: Defines global state (theme mode, user ID) with a setMode reducer to toggle between light and dark themes.
 geoData.js: Provides geographic data for the Chloropleth map on the Geography page.
 api.js: Uses Redux Toolkit Query to define API endpoints (getSales, getProducts, etc.), with hooks like useGetSalesQuery used in components for data fetching.
 
-API Endpoints
+#API Endpoints
 The backend API routes are defined in server/routes and called via api.js:
 
 General Routes (general.js): /general/user/:id (user data), /general/dashboard (dashboard stats).
@@ -54,10 +54,10 @@ Client Routes (client.js): /client/products, /client/customers, /client/transact
 Sales Routes (sales.js): /sales/sales (sales data for charts).
 Management Routes (management.js): /management/admins, /management/performance/:id.
 
-Page Descriptions
+#Page Descriptions
 Each page corresponds to a scene in client/src/scenes:
 
-Dashboard: Displays a grid of stats, a line chart of sales, and a pie chart for sales breakdown, styled in a dark theme with a Navbar and Sidebar.
+Dashboard: Displays a grid of stats, a line chart of sales over time, and a pie chart for sales breakdown, all styled in a dark theme with a Navbar and Sidebar.
 Products: Shows a data grid of products with columns for name, price, and category, featuring a search bar in a dark theme.
 Customers: Presents a data grid of customer details like name and email, with filtering options in a dark theme.
 Transactions: Displays a paginated data grid of transactions with columns for ID and cost, including a search bar in a dark theme.
@@ -70,13 +70,13 @@ Admin: Displays a data grid listing admin details with a search bar, styled in a
 Performance: Features a line chart and table showing user performance metrics like affiliate sales, styled in a dark theme.
 Settings: Displays a form with sections for Data Refresh, Dashboard Configuration, Export Settings, Notifications, and Analytics, styled in a dark theme.
 
-Technologies Used
+#Technologies Used
 
 Frontend: React, Redux Toolkit, Material-UI, Nivo (for charts).
 Backend: Express, MongoDB.
 Libraries: @reduxjs/toolkit, @mui/x-data-grid, @nivo/geo.
 
-Notes
+#Notes
 
 The trends.js file is referenced but missing; it may handle trend-related state.
 Ensure MongoDB is running for the backend API to function properly.
