@@ -1,70 +1,83 @@
-# Getting Started with Create React App
+Admin Dashboard Project
+Overview
+This project is an admin dashboard built with React and Redux Toolkit, designed to manage and visualize business data such as sales, products, customers, and geographic insights, styled with Material-UI in a dark/light theme.
+Project Structure
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+client/: Frontend React application.
+src/scenes/: Contains page components (dashboard, products, customers, etc.).
+src/state/: Redux Toolkit state management files (index.js, api.js, geoData.js).
+src/components/: Reusable components (Navbar, Sidebar, BreakdownChart, etc.).
 
-## Available Scripts
 
-In the project directory, you can run:
+server/: Backend Express API.
+routes/: API routes (general.js, client.js, etc.).
+controllers/: Route handlers for API endpoints.
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Setup Instructions
 
-### `npm test`
+Clone the repository:git clone <repository-url>
+cd <repository-name>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+Install dependencies:
+Frontend: cd client && npm install
+Backend: cd server && npm install
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Set environment variables:
+In client/, create a .env file with:REACT_APP_BASE_URL=http://localhost:5001
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+In server/, set up MongoDB connection (e.g., .env with MONGO_URI).
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Run the application:
+Backend: cd server && npm start (runs on http://localhost:5001)
+Frontend: cd client && npm start (runs on http://localhost:3000)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+State Management
+State is managed using Redux Toolkit in client/src/state:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+index.js: Defines global state (theme mode, user ID) with a setMode reducer to toggle between light and dark themes.
+geoData.js: Provides geographic data for the Chloropleth map on the Geography page.
+api.js: Uses Redux Toolkit Query to define API endpoints (getSales, getProducts, etc.), with hooks like useGetSalesQuery used in components for data fetching.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+API Endpoints
+The backend API routes are defined in server/routes and called via api.js:
 
-### Code Splitting
+General Routes (general.js): /general/user/:id (user data), /general/dashboard (dashboard stats).
+Client Routes (client.js): /client/products, /client/customers, /client/transactions, /client/geography.
+Sales Routes (sales.js): /sales/sales (sales data for charts).
+Management Routes (management.js): /management/admins, /management/performance/:id.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Page Descriptions
+Each page corresponds to a scene in client/src/scenes:
 
-### Analyzing the Bundle Size
+Dashboard: Displays a grid of stats, a line chart of sales, and a pie chart for sales breakdown, styled in a dark theme with a Navbar and Sidebar.
+Products: Shows a data grid of products with columns for name, price, and category, featuring a search bar in a dark theme.
+Customers: Presents a data grid of customer details like name and email, with filtering options in a dark theme.
+Transactions: Displays a paginated data grid of transactions with columns for ID and cost, including a search bar in a dark theme.
+Geography: Features a Chloropleth map highlighting regions like Afghanistan with color gradients, styled in a dark theme.
+Overview: Shows a large line chart of sales over time with toggle options for sales and units, styled in a dark theme.
+Daily: Displays a line chart of daily sales trends with hover tooltips, presented in a dark theme.
+Monthly: Features a line chart of monthly sales data with selectable years, styled in a dark theme.
+Breakdown: Shows a pie chart of sales by category with color-coded segments and a total sales label, styled in a dark theme.
+Admin: Displays a data grid listing admin details with a search bar, styled in a dark theme.
+Performance: Features a line chart and table showing user performance metrics like affiliate sales, styled in a dark theme.
+Settings: Displays a form with sections for Data Refresh, Dashboard Configuration, Export Settings, Notifications, and Analytics, styled in a dark theme.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Technologies Used
 
-### Making a Progressive Web App
+Frontend: React, Redux Toolkit, Material-UI, Nivo (for charts).
+Backend: Express, MongoDB.
+Libraries: @reduxjs/toolkit, @mui/x-data-grid, @nivo/geo.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Notes
 
-### Advanced Configuration
+The trends.js file is referenced but missing; it may handle trend-related state.
+Ensure MongoDB is running for the backend API to function properly.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
