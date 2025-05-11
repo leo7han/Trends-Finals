@@ -1,4 +1,4 @@
-Admin Dashboard Project
+# Admin Dashboard Project
 Overview
 This project is an admin dashboard built with React and Redux Toolkit, designed to manage and visualize business data such as sales, products, customers, and geographic insights, styled with Material-UI in a dark/light theme.
 Project Structure
