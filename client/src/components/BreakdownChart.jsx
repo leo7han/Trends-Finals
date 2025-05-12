@@ -56,12 +56,14 @@ const BreakdownChart = ({ isDashboard = false, choroplethColor = 'green' }) => {
           axis: {
             domain: {
               line: {
-                stroke: theme.palette.secondary[200],
+                stroke: theme.palette.secondary[400],
+                fontSize: 25,
               },
             },
             legend: {
               text: {
-                fill: theme.palette.secondary[200],
+                fill: theme.palette.secondary[500],
+                itemsSpacing: 20,
               },
             },
             ticks: {
@@ -70,18 +72,25 @@ const BreakdownChart = ({ isDashboard = false, choroplethColor = 'green' }) => {
                 strokeWidth: 1,
               },
               text: {
-                fill: theme.palette.secondary[400],
+                fill: theme.palette.secondary[100],
               },
             },
           },
           legends: {
             text: {
-              fill: theme.palette.secondary[400],
+              fill: theme.palette.secondary[100],
+              fontSize: 25,
             },
           },
           tooltip: {
             container: {
-              color: theme.palette.primary.main,
+              color: theme.palette.mode === "light" ? "#000" : theme.palette.primary.main,
+              fontSize: 25,
+            },
+          },
+          labels: {
+            text: {
+              fontSize: 25, // Increase font size for arc link labels
             },
           },
         }}
@@ -100,13 +109,13 @@ const BreakdownChart = ({ isDashboard = false, choroplethColor = 'green' }) => {
           modifiers: [["darker", 0.2]],
         }}
         enableArcLinkLabels={!isDashboard}
-        arcLinkLabelsTextColor={theme.palette.secondary[400]}
+        arcLinkLabelsTextColor={theme.palette.secondary[100]}
         arcLinkLabelsThickness={2}
         arcLinkLabelsColor={{ from: "color" }}
         arcLabelsSkipAngle={10}
         arcLabelsTextColor={{
           from: "color",
-          modifiers: [["darker", 2]],
+          modifiers: [["brighter", 10]],
         }}
         legends={[
           {
@@ -115,7 +124,7 @@ const BreakdownChart = ({ isDashboard = false, choroplethColor = 'green' }) => {
             justify: false,
             translateX: isDashboard ? 20 : 0,
             translateY: isDashboard ? 50 : 56,
-            itemsSpacing: 0,
+            itemsSpacing: 85,
             itemWidth: 85,
             itemHeight: 18,
             itemTextColor: "#999",
@@ -127,7 +136,7 @@ const BreakdownChart = ({ isDashboard = false, choroplethColor = 'green' }) => {
               {
                 on: "hover",
                 style: {
-                  itemTextColor: theme.palette.primary[500],
+                  itemTextColor: theme.palette.primary[900],
                 },
               },
             ],
@@ -147,7 +156,7 @@ const BreakdownChart = ({ isDashboard = false, choroplethColor = 'green' }) => {
             : "translate(-50%, -100%)",
         }}
       >
-        <Typography variant="h6">
+        <Typography variant="h6" sx={{ fontSize: "1.5rem" }}>
           {!isDashboard && "Total:"} ${data.yearlySalesTotal}
         </Typography>
       </Box>

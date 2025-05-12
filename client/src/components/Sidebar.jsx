@@ -3,6 +3,7 @@ import {
   Box,
   Divider,
   Drawer,
+  Button,
   IconButton,
   List,
   ListItem,
@@ -108,6 +109,10 @@ const Sidebar = ({
     setActive(pathname.substring(1));
   }, [pathname]);
 
+  const handleRedirect = () => {
+    navigate("/dashboard"); // Redirect to the Dashboard (replace with desired route if different)
+  };
+
   return (
     <Box component="nav">
       {isSidebarOpen && (
@@ -129,7 +134,11 @@ const Sidebar = ({
         >
           <Box width="100%">
             <Box m="1.5rem 2rem 2rem 1.65rem">
-              <FlexBetween color={theme.palette.secondary[100]}>
+              <Button
+              onClick = {handleRedirect}
+              sx = {{ p: 0, textTransform: "none" }}
+              >
+                <FlexBetween color={theme.palette.secondary[100]}>
                 <Box display="flex" alignItems="center" gap="0.5rem">
                   <Typography variant="h2" fontWeight="1000">
                     SYLPHONEX
@@ -140,7 +149,8 @@ const Sidebar = ({
                     <ChevronLeft />
                   </IconButton>
                 )}
-              </FlexBetween>
+                </FlexBetween>
+              </Button>
             </Box>
             <List>
               {navItems.map(({ text, icon }) => {

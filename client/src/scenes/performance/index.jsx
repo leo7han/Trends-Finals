@@ -66,7 +66,7 @@ const Performance = () => {
             borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: theme.palette.secondary.light,
+            backgroundColor: theme.palette.secondary[700],
           },
           "& .MuiDataGrid-footerContainer": {
             backgroundColor: theme.palette.background.alt,

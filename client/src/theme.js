@@ -105,7 +105,7 @@ export const themeSettings = (mode) => {
             },
             text: {
               primary: tokensDark.text.dark,  // Warm off-white
-              secondary: tokensDark.grey[300],
+              secondary: tokensDark.grey[0],
             }
           }
         : {

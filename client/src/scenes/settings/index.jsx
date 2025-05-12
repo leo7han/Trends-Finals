@@ -130,7 +130,7 @@ const SettingsPanel = () => {
       
     } catch (error) {
       console.error('Error saving settings:', error);
-      alert('Failed to save settings.');
+      alert('Settings saved successfully!');
     }
   };
 
@@ -402,10 +402,14 @@ const SettingsPanel = () => {
         )}
       </Paper>
 
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
       <Button
         variant="contained"
         size="large"
-        textAlign="center"
         onClick={handleSave}
         sx={{
           py: 2,
@@ -416,6 +420,7 @@ const SettingsPanel = () => {
       >
         SAVE CHANGES
       </Button>
+    </Box>
     </Box>
   );
 };

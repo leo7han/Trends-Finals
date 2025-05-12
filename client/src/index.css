@@ -12,7 +12,7 @@ body,
 :root {
   /* Primary Colors */
   --primary-main: #2d572c;       /* Deep green (your existing) */
-  --primary-light: #518d4b;     /* Medium green */
+  --primary-light: #599454;     /* Medium green */
   --primary-lighter: #8bb387;   /* Light green */
   
   /* Secondary Colors */
@@ -48,5 +48,5 @@ body,
 
 /* Handle on Hover */
 ::-webkit-scrollbar-track:hover {
-  background: #21295c;
+  background: #7a7f9d;
 }

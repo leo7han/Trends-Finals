@@ -37,7 +37,7 @@ const Product = ({
       }}
     >
       <CardContent>
-        <Typography sx = {{ fontSize: 14 }} color = {theme.palette.secondary[700]} gutterBottom>
+        <Typography sx = {{ fontSize: 14 }} color = {theme.palette.secondary[300]} gutterBottom>
           {category}
         </Typography>
         <Typography variant = "h5" component= "div">
