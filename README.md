@@ -29,6 +29,7 @@ In server/.env, configure the MongoDB connection and set port:
 MONGO_URL=<ConnectionLink>
 PORT=5001
 
+
 In client/.env.local, configure any frontend-specific variables (e.g., API base URL).
 REACT_APP_BASE_URL=http://localhost:5001/
 
