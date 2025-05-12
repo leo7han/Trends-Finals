@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Box, TextField, Button, CircularProgress } from "@mui/material";
+import { useDispatch } from 'react-redux';
+import {
+  Box,
+  TextField,
+  Button,
+  CircularProgress,
+  Alert,
+} from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const UpdateCustomer = () => {
   const { customerId } = useParams(); // Get customerId from the URL
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [customerData, setCustomerData] = useState({
     name: "",
@@ -16,29 +24,48 @@ const UpdateCustomer = () => {
     role: "",
   });
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState("");
 
-  // Fetch the current customer data when the component mounts
+  // Fetch customer data
   useEffect(() => {
+    if (!customerId) return;
+
+    const controller = new AbortController();
     const fetchCustomerData = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`/customers/update/${customerId}`);  // Ensure the customerId is passed correctly
+        setError(null);
+
+        const response = await axios.get(
+          `http://localhost:5001/client/customers/update/${customerId}`,
+          { signal: controller.signal }
+        );
         setCustomerData(response.data);
       } catch (err) {
-        console.error("Error loading customer data", err);
-        setError(err.response ? err.response.data.message : "Failed to load customer data");
+        if (axios.isCancel(err)) {
+          console.log("Request cancelled", err.message);
+        } else {
+          console.error("Error loading customer data", {
+            message: err.message,
+            status: err.response?.status,
+            data: err.response?.data,
+          });
+          setError(
+            err.response?.data?.message || "Failed to load customer data"
+          );
+        }
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchCustomerData();
+    return () => controller.abort();
   }, [customerId]);
 
-  // Handle form input change
+  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCustomerData((prevData) => ({
@@ -50,30 +77,51 @@ const UpdateCustomer = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
+
+    if (!customerId || !customerData || typeof customerData !== "object") {
+      setError("Invalid customer ID or data.");
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      setIsSubmitting(true);
-      await axios.patch(`http://localhost:5001/customers/update/${customerId}`, customerData); // Correct API URL for PATCH request
-      navigate(`/customers/${customerId}`); // Redirect to the customer's details page after update
+      const response = await axios.patch(
+        `http://localhost:5001/client/customers/update/${customerId}`,
+        customerData
+      );
+
+      if (response.status === 200) {
+        alert("Customer successfully updated!");
+        navigate(`/customers`); // Redirect to updated customer page
+      } else {
+        throw new Error("Failed to update customer.");
+      }
     } catch (err) {
-      setError(err.response ? err.response.data.message : "Error updating customer data");
+      console.error("Error updating customer:", err);
+      setError("Failed to update customer. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Show a loading spinner while the data is being fetched
-  if (isLoading) {
-    return <CircularProgress />;
-  }
+  if (isLoading) return <CircularProgress />;
 
   return (
     <Box m="1.5rem 2.5rem">
       <h2>Update Customer Information</h2>
+      <div><strong>Customer ID:</strong> {customerId}</div>
+      <div><strong>Name:</strong> {customerData.name}</div>
+      <div><strong>Email:</strong> {customerData.email}</div>
+      <div><strong>Phone Number:</strong> {customerData.phoneNumber}</div>
+      <div><strong>Country:</strong> {customerData.country}</div>
+      <div><strong>Occupation:</strong> {customerData.occupation}</div>
+      <div><strong>Role:</strong> {customerData.role}</div>
 
-      {error && <div style={{ color: "red" }}>{error}</div>}
+      {error && <Alert severity="error" sx={{ my: 2 }}>{error}</Alert>}
 
       <form onSubmit={handleSubmit}>
-        {/* Name Field */}
         <TextField
           label="Name"
           name="name"
@@ -82,8 +130,6 @@ const UpdateCustomer = () => {
           fullWidth
           required
         />
-
-        {/* Email Field */}
         <TextField
           label="Email"
           name="email"
@@ -93,8 +139,6 @@ const UpdateCustomer = () => {
           fullWidth
           required
         />
-
-        {/* Phone Number Field */}
         <TextField
           label="Phone Number"
           name="phoneNumber"
@@ -102,8 +146,6 @@ const UpdateCustomer = () => {
           onChange={handleChange}
           fullWidth
         />
-
-        {/* Country Field */}
         <TextField
           label="Country"
           name="country"
@@ -111,8 +153,6 @@ const UpdateCustomer = () => {
           onChange={handleChange}
           fullWidth
         />
-
-        {/* Occupation Field */}
         <TextField
           label="Occupation"
           name="occupation"
@@ -120,8 +160,6 @@ const UpdateCustomer = () => {
           onChange={handleChange}
           fullWidth
         />
-
-        {/* Role Field */}
         <TextField
           label="Role"
           name="role"
@@ -130,12 +168,12 @@ const UpdateCustomer = () => {
           fullWidth
         />
 
-        {/* Submit Button */}
         <Button
           variant="contained"
           color="primary"
           type="submit"
           disabled={isSubmitting}
+          sx={{ mt: 2 }}
         >
           {isSubmitting ? <CircularProgress size={24} /> : "Update Customer"}
         </Button>

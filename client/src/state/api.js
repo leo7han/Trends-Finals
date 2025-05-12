@@ -45,9 +45,9 @@ export const api = createApi({
 
     // Get a specific customer by ID
     getCustomer: build.query({
-      query: (id) => `client/customers/${id}`, // Endpoint to get a specific customer by ID
-      providesTags: ["Customers"],
-    }),
+  query: (id) => `customers/update/${id}`,  // Align the URL with your backend route
+  providesTags: ["Customers"],
+}),
 
     // Get transactions with pagination and sorting
     getTransactions: build.query({
@@ -102,22 +102,21 @@ export const api = createApi({
 
     // Update an existing customer by ID
     updateCustomer: build.mutation({
-      query: (customer) => ({
-        url: `/client/customers/update/${customer.id}`, // Make sure this is the correct endpoint
-        method: "PUT", // Use PUT or PATCH depending on your backend
-        body: customer, // The customer object to be updated
-      }),
-      // Invalidates "Customers" tag to refetch customer data
-      invalidatesTags: ["Customers"],
-    }),
-
-      deleteCustomer: build.mutation({
-  query: (customerId) => ({
-    url: `client/customers/${customerId}`,
-    method: 'DELETE',
+  query: (customer) => ({
+    url: `client/customers/update/${customer._id}`, // Endpoint to update customer with their _id
+    method: "PATCH", // Use PATCH to update the customer
+    body: customer, // Send the updated customer data in the request body
   }),
+  // Optional: you can add invalidation logic to refetch the customer data after update
   invalidatesTags: ["Customers"],
-})
+}),
+    deleteCustomer: build.mutation({
+        query: (customerId) => ({
+        url: `client/customers/${customerId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ["Customers"],
+    })
   }),
 });
 

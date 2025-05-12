@@ -1,10 +1,10 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Box, useTheme, Button, TextField } from "@mui/material";
 import { useGetCustomersQuery, useDeleteCustomerMutation } from "state/api"; // Assuming useDeleteCustomerMutation is defined in your API hooks
 import Header from "components/Header";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+
 
 const Customers = () => {
   const theme = useTheme();
@@ -12,11 +12,16 @@ const Customers = () => {
   const { data, isLoading, refetch } = useGetCustomersQuery();
   const [deleteCustomer] = useDeleteCustomerMutation();
   const [searchTerm, setSearchTerm] = useState("");
+ 
+  useEffect(() => {
+  refetch(); 
+}, [refetch]);
 
   // Handle search input change
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
+
 
   // Filter rows based on search term
   const filteredData = useMemo(() => {
@@ -91,16 +96,35 @@ const Customers = () => {
         );
       },
     },
+    {
+      field: "update",
+      headerName: "Update",
+      flex: 0.5,
+      renderCell: (params) => {
+        const customerId = params.row._id; // Assuming your data has '_id' as the identifier
+        return (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => handleUpdate(customerId)}
+          >
+            Update
+          </Button>
+        );
+      },
+    },
   ];
+const handleUpdate = async (customerId) => {
+  navigate(`update/${customerId}`);
+};
 
- const handleDelete = async (customerId) => {
+const handleDelete = async (customerId) => {
   if (!customerId) return;
 
   try {
-    // Use the deleteCustomer mutation
-    const response = await deleteCustomer(customerId).unwrap();  // .unwrap() is used to handle the response
-    console.log("Customer deleted:", response);
-    refetch();  // Re-fetch data after deletion
+    const response = await deleteCustomer(customerId).unwrap();  // Wait for the API call
+    console.log("Customer deleted:", response);                 // Now it's safe to log
+    refetch();  
     alert('Customer deleted successfully!');
   } catch (error) {
     console.error("Error deleting customer:", error);

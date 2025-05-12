@@ -17,8 +17,10 @@ router.get("/products", getProducts);
 
 router.get("/customers", getCustomers);
 router.post("/customers", createUser);
+
 router.get("/customers/update/:id", getCustomer);
 router.patch("/customers/update/:id", updateCustomer); 
+
 router.delete('/customers/:id', deleteCustomer);
 
 

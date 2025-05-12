@@ -51,8 +51,7 @@ function App() {
 
               <Route path="/customers/create" element={<CustomersCreate />} />
               <Route path="/customers/update/:customerId" element={<UpdateCustomer />} />
-              <Route path="/customers/create" element={<CustomersCreate />} />
-              <Route path="/customers/update/:customerId" element={<UpdateCustomer />} />
+             
             </Route>
           </Routes>
         </ThemeProvider>

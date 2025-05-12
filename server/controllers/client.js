@@ -41,7 +41,7 @@ export const getCustomers = async (req, res) => {
 };
 
 export const getCustomer = async (req, res) => {
-  const { id } = req.params; // Extract the customer ID from the request parameters
+  const { id } = req.params;  // Extract the customer ID from the request parameters
 
   try {
     // Log the customer ID for debugging purposes
@@ -65,15 +65,16 @@ export const getCustomer = async (req, res) => {
 };
 
 export const updateCustomer = async (req, res) => {
-  const { customerId } = req.params;
-  const { name, email, phoneNumber, country, occupation, role } = req.body;
-
+  const { id: customerId } = req.params;  // Extract the customerId from the request parameters
+  const { name, email, phoneNumber, country, occupation, role } = req.body;  // Extract the fields to update
+  console.log("Request Body:", req.body);
+  console.log("Customer ID from Params:", req.params.id);
   try {
     // Find the customer by ID and update the specified fields
     const updatedCustomer = await User.findByIdAndUpdate(
-      customerId,
-      { name, email, phoneNumber, country, occupation, role },
-      { new: true, overwrite: false } // Don't overwrite the entire document, just update the provided fields
+      customerId,  // The ID to search for
+      { name, email, phoneNumber, country, occupation, role },  // The fields to update
+      { new: true, overwrite: false }  // Don't overwrite the entire document, just update the provided fields
     );
 
     if (!updatedCustomer) {
@@ -82,9 +83,11 @@ export const updateCustomer = async (req, res) => {
 
     return res.status(200).json(updatedCustomer);
   } catch (error) {
+    console.error("Error updating customer:", error);  // Log the error for debugging
     return res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 export const getTransactions = async (req, res) => {
   try {
@@ -196,21 +199,14 @@ export const createUser = async (req, res) => {
 
 // Delete User (Customer)
 export const deleteCustomer = async (req, res) => {
-  const customerId = req.params.id; // This is where you're extracting the 'id' parameter from the URL
-
+  const customerId = req.params.id; 
   try {
-    // Assuming you have a Customer model connected to your database
     const result = await User.findByIdAndDelete(customerId);
-
     if (!result) {
-      // If no customer was found with the given ID, return a 404 error
       return res.status(404).json({ message: "Customer not found" });
     }
-
-    // Successfully deleted
     res.status(200).json({ message: "Customer deleted successfully!" });
   } catch (error) {
-    // Handle error and send a response
     console.error(error);
     res.status(500).json({ message: "Failed to delete customer" });
   }
