@@ -17,20 +17,107 @@ controllers/: Route handlers for API endpoints.
 
 # Setup Instructions
 
-Clone the repository:git clone <repository-url>
-cd <repository-name>
+To set up the project locally, follow these steps:
+Unzip the project file (if provided as a zip) or clone the repository from GitHub:
 
 
-Install dependencies:
-Frontend: cd client && npm install
-Backend: cd server && npm install
+git clone https://github.com/[your-repo]/mern-admin-dashboard.git
+
+Set up environment variables:
+create a Mongodb cluster and link it to your .env file
+In server/.env, configure the MongoDB connection and set port:
+MONGO_URL=<ConnectionLink>
+PORT=5001
+
+In client/.env.local, configure any frontend-specific variables (e.g., API base URL).
+REACT_APP_BASE_URL=http://localhost:5001/
 
 
-Set environment variables:
-In client/, create a .env file with:REACT_APP_BASE_URL=http://localhost:5001
+Navigate to the server directory and install backend dependencies:
 
 
-In server/, set up MongoDB connection (e.g., .env with MONGO_URI).
+cd server
+npm install
+
+
+Navigate to the client directory and install frontend dependencies:
+cd ../client
+cd client
+npm install
+
+Start the MongoDB server locally or use a cloud service like MongoDB Atlas.
+Run the backend server:
+cd server
+npm run dev
+
+Run the frontend server:
+cd client
+npm run start
+
+Access the application at http://localhost:3000.
+In Server/Index.js uncomment the insert functions to fill up the database and uncomment it for all subsequent runs
+/* MONGOOSE SETUP */
+const PORT = process.env.PORT || 9000;
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(async () => {
+    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+  })
+  .catch((error) => console.log(`${error} did not connect`));
+
+
+ 
+    /* ONLY ADD DATA ONE TIME */
+    /*
+    try{
+      AffiliateStat.insertMany(dataAffiliateStat);
+      console.log("Affiliates succeeded")
+    } catch (err){
+      console.error("Affiliates failed")
+    }
+
+
+    try{
+      OverallStat.insertMany(dataOverallStat);
+      console.log("Overall succeeded")
+    } catch (err){
+      console.error("Overall failed")
+    }
+
+
+    try{
+      Product.insertMany(dataProduct);
+      console.log("Product succeeded")
+    } catch (err){
+      console.error("Product failed")
+    }
+
+
+    try{
+      ProductStat.insertMany(dataProductStat);
+      console.log("ProductStat succeeded")
+    } catch (err){
+      console.error("ProductStat failed")
+    }
+
+
+    try{
+      Transaction.insertMany(dataTransaction);
+      console.log("Transaction succeeded")
+    } catch (err){
+      console.error("Transaction failed")
+    }
+    try{
+      User.insertMany(dataUser);
+      console.log("User succeeded")
+    } catch (err){
+      console.error("User failed")
+    }
+    */
+
 
 
 Run the application:
