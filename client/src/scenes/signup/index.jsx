@@ -55,7 +55,7 @@ const Signup = () => {
     setError(null);
 
     try {
-      const response = await axios.post('http://localhost:5001/client/customers', formData);
+      const response = await axios.post('https://trends-finals-backend.onrender.com/client/customers', formData);
       if (response.status === 201) {
         alert('User successfully created!');
         navigate(-1);

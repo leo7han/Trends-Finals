@@ -48,7 +48,7 @@ function Login() {
   e.preventDefault();
 
   try {
-    const response = await axios.post('http://localhost:5001/login', { email, password });
+    const response = await axios.post('https://trends-finals-backend.onrender.com/login', { email, password });
 
     // Only proceed if login is truly successful
     if (response.data.message === "Login successful") {

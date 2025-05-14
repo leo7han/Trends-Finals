@@ -39,7 +39,7 @@ const UpdateCustomer = () => {
         setError(null);
 
         const response = await axios.get(
-          `http://localhost:5001/client/customers/update/${customerId}`,
+          `https://trends-finals-backend.onrender.com/client/customers/update/${customerId}`,
           { signal: controller.signal }
         );
         setCustomerData(response.data);
@@ -88,7 +88,7 @@ const UpdateCustomer = () => {
 
     try {
       const response = await axios.patch(
-        `http://localhost:5001/client/customers/update/${customerId}`,
+        `https://trends-finals-backend.onrender.com/client/customers/update/${customerId}`,
         customerData
       );
 
