@@ -38,15 +38,15 @@ body,
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #7a7f9d;
+  background: #3a6d3a;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #21295c;
+  background: #1a3e1a ;
 }
 
 /* Handle on Hover */
 ::-webkit-scrollbar-track:hover {
-  background: #7a7f9d;
+  background:  #5a7d5a;
 }
