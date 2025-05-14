@@ -45,8 +45,16 @@ export const api = createApi({
 
     // Get a specific customer by ID
     getCustomer: build.query({
-  query: (id) => `customers/update/${id}`,  // Align the URL with your backend route
-  providesTags: ["Customers"],
+      query: (id) => `customers/update/${id}`,  // Align the URL with your backend route
+      providesTags: ["Customers"],
+    }),
+
+    getLogin: build.mutation({
+  query: (credentials) => ({
+    url: 'login',
+    method: 'POST',
+    body: credentials,
+  }),
 }),
 
     // Get transactions with pagination and sorting
@@ -133,5 +141,6 @@ export const {
   useGetDashboardQuery,
   useAddCustomerMutation,
   useUpdateCustomerMutation, // Use this hook to update a specific customer
-  useDeleteCustomerMutation
+  useDeleteCustomerMutation,
+  useGetLoginQuery
 } = api;

@@ -19,7 +19,7 @@ import Performance from "scenes/performance";
 import CustomersCreate from "scenes/customerscreate";
 import UpdateCustomer from "scenes/customersupdate";
 import Settings from "scenes/settings";
-
+import Login from "scenes/login";
 
 
 function App() {
@@ -48,11 +48,12 @@ function App() {
               <Route path="/performance" element={<Performance />} />
 
               <Route path="/settings" element={<Settings />} />
-
+              
               <Route path="/customers/create" element={<CustomersCreate />} />
               <Route path="/customers/update/:customerId" element={<UpdateCustomer />} />
              
             </Route>
+             <Route path="/login" element={<Login />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
