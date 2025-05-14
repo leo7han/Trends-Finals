@@ -302,7 +302,7 @@ const Intro = () => {
                   <Button
                     variant="contained"
                     size="large"
-                    onClick={() => navigate('/login')}
+                    onClick={() => navigate('/signup')}
                     sx={{
                       backgroundColor: theme.palette.background.paper,
                       color: theme.palette.primary.light,

@@ -45,16 +45,26 @@ function Login() {
   `;
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:5001/login', { email, password });
-      console.log("Login success:", response.data);
-      navigate('/dashboard');
-    } catch (err) {
-      console.error("Login failed:", err.response?.data?.message || err.message);
-    }
-  };
+  e.preventDefault();
 
+  try {
+    const response = await axios.post('http://localhost:5001/login', { email, password });
+
+    // Only proceed if login is truly successful
+    if (response.data.message === "Login successful") {
+      console.log("Login success:", response.data);
+      const user = response.data.user;
+      localStorage.setItem('user', JSON.stringify(user));
+      navigate('/dashboard');
+    } else {
+      alert(response.data.message || "Login failed");
+    }
+  } catch (err) {
+    console.error("Login failed:", err.response?.data?.message || err.message);
+    alert(err.response?.data?.message || "Login failed");
+  }
+
+};
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   LightModeOutlined,
   DarkModeOutlined,
@@ -35,11 +35,23 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+if (storedUser) {
+  user=(storedUser);
+}
+
   // Navigate to the settings page when the settings icon is clicked
   const handleSettingsClick = () => {
     navigate('/settings');
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate('/login');
+  };
+
+
+  
   return (
     <AppBar
       sx={{
@@ -114,7 +126,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
               onClose={handleClose}
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
-              <MenuItem onClick={handleClose}>Log Out</MenuItem>
+              <MenuItem onClick={handleLogout}>Log Out</MenuItem>
             </Menu>
           </FlexBetween>
         </FlexBetween>
@@ -124,3 +136,12 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
 };
 
 export default Navbar;
+
+
+//logic flow
+//log in with password and email
+//database searches for password and email
+//goes to log in screen
+
+//change name and profession to match db
+//send a signal from login?
