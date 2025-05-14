@@ -138,7 +138,8 @@ function Login() {
             textAlign: 'center',
             mb: 3,
             fontFamily: 'inherit',
-            fontWeight: 500,
+            fontWeight: 700,
+            fontSize: "25px",
           }}
         >
           Welcome back to your Dashboard!
