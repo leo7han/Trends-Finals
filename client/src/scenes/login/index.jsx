@@ -20,6 +20,7 @@ import {
   Visibility,
   VisibilityOff,
 } from '@mui/icons-material';
+import { tokensDark, tokensLight, themeSettings } from 'theme.js'; // Import your theme
 
 // Animation keyframes
 const floatAnimation = keyframes`
@@ -28,42 +29,20 @@ const floatAnimation = keyframes`
   100% { transform: translateY(0px); }
 `;
 
-const borderGlow = keyframes`
-  0% { box-shadow: 0 0 5px #818cf8; }
-  50% { box-shadow: 0 0 20px #818cf8; }
-  100% { box-shadow: 0 0 5px #818cf8; }
-`;
-
-// Rename theme to avoid conflict
-const customTheme = createTheme({
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#556cd6',
-      100: '#e0e7ff',
-      200: '#c7d2fe',
-      300: '#a5b4fc',
-      400: '#818cf8',
-      500: '#6366f1',
-      600: '#4f46e5',
-    },
-    text: {
-      primary: '#ffffff',
-      secondary: '#b0b0b0',
-    },
-    background: {
-      default: '#1a1a1a',
-    },
-  },
-});
-
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
-  const theme = useTheme(); // now safely used
+  const theme = useTheme();
+
+  // Update borderGlow to use theme colors
+  const borderGlow = keyframes`
+    0% { box-shadow: 0 0 5px ${theme.palette.primary[400]}; }
+    50% { box-shadow: 0 0 20px ${theme.palette.primary[400]}; }
+    100% { box-shadow: 0 0 5px ${theme.palette.primary[400]}; }
+  `;
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -85,7 +64,7 @@ function Login() {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #222b18 0%, #11150c 100%)',
+        background: theme.palette.background.default,
         p: 3,
         fontFamily: 'Inter, sans-serif',
       }}
@@ -95,10 +74,14 @@ function Login() {
         onSubmit={handleLogin}
         sx={{
           width: '100%',
-          maxWidth: '450px',
+          height: '100%',
+          maxWidth: '650px',
+          maxHeight: '850px',
           p: 4,
           borderRadius: '16px',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
+          boxShadow: theme.palette.mode === 'dark' 
+            ? '0 8px 32px rgba(0, 0, 0, 0.5)' 
+            : '0 8px 32px rgba(0, 0, 0, 0.1)',
           backgroundColor: theme.palette.background.default,
           display: 'flex',
           flexDirection: 'column',
@@ -128,7 +111,8 @@ function Login() {
         }}
       >
         <Typography
-          variant="h3"
+          variant="h2"
+          fontSize="60px"
           component="h1"
           sx={{
             color: theme.palette.primary.main,
@@ -136,7 +120,9 @@ function Login() {
             textAlign: 'center',
             mb: 2,
             fontFamily: 'inherit',
-            textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+            textShadow: theme.palette.mode === 'dark' 
+              ? '0 2px 4px rgba(0,0,0,0.3)' 
+              : '0 2px 4px rgba(0,0,0,0.1)',
             animation: `${floatAnimation} 4s ease-in-out infinite`,
             letterSpacing: '1px',
           }}
@@ -155,7 +141,7 @@ function Login() {
             fontWeight: 500,
           }}
         >
-          Welcome back to your dashboard
+          Welcome back to your Dashboard!
         </Typography>
 
         <TextField
@@ -267,11 +253,15 @@ function Login() {
             '&:hover': {
               backgroundColor: theme.palette.primary[600],
               transform: 'translateY(-2px)',
-              boxShadow: '0 6px 12px rgba(85, 107, 61, 0.4)',
+              boxShadow: theme.palette.mode === 'dark'
+                ? '0 6px 12px rgba(85, 107, 61, 0.4)'
+                : '0 6px 12px rgba(85, 107, 61, 0.3)',
             },
             transition: 'all 0.3s ease',
             transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
-            boxShadow: '0 4px 8px rgba(85, 107, 61, 0.3)',
+            boxShadow: theme.palette.mode === 'dark'
+              ? '0 4px 8px rgba(85, 107, 61, 0.3)'
+              : '0 4px 8px rgba(85, 107, 61, 0.2)',
             fontWeight: 600,
             letterSpacing: '0.5px',
             fontSize: '1rem',
@@ -321,8 +311,11 @@ function Login() {
 }
 
 export default function WrappedLogin() {
+  // Create theme based on your themeSettings
+  const theme = createTheme(themeSettings('dark')); // Default to dark mode
+  
   return (
-    <ThemeProvider theme={customTheme}>
+    <ThemeProvider theme={theme}>
       <Login />
     </ThemeProvider>
   );
