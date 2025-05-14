@@ -20,7 +20,7 @@ import CustomersCreate from "scenes/customerscreate";
 import UpdateCustomer from "scenes/customersupdate";
 import Settings from "scenes/settings";
 import Login from "scenes/login";
-
+import Signup from "scenes/signup";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -34,7 +34,7 @@ function App() {
           <CssBaseline />
           <Routes>
             <Route element={<Layout />}>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/" element={<Navigate to="/login" replace />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
               <Route path="/customers" element={<Customers />} />
@@ -54,6 +54,7 @@ function App() {
              
             </Route>
              <Route path="/login" element={<Login />} />
+             <Route path="/signup" element={<Signup />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

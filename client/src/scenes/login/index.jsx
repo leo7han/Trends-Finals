@@ -1,54 +1,329 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import {
+  ThemeProvider,
+  createTheme,
+  useTheme,
+  keyframes,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  InputAdornment,
+  IconButton,
+  Link,
+} from '@mui/material';
+import {
+  EmailOutlined,
+  LockOutlined,
+  Visibility,
+  VisibilityOff,
+} from '@mui/icons-material';
+
+// Animation keyframes
+const floatAnimation = keyframes`
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+`;
+
+const borderGlow = keyframes`
+  0% { box-shadow: 0 0 5px #818cf8; }
+  50% { box-shadow: 0 0 20px #818cf8; }
+  100% { box-shadow: 0 0 5px #818cf8; }
+`;
+
+// Rename theme to avoid conflict
+const customTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#556cd6',
+      100: '#e0e7ff',
+      200: '#c7d2fe',
+      300: '#a5b4fc',
+      400: '#818cf8',
+      500: '#6366f1',
+      600: '#4f46e5',
+    },
+    text: {
+      primary: '#ffffff',
+      secondary: '#b0b0b0',
+    },
+    background: {
+      default: '#1a1a1a',
+    },
+  },
+});
+
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate=useNavigate()
+  const [showPassword, setShowPassword] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
+  const theme = useTheme(); // now safely used
 
   const handleLogin = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5001/login', { email, password });
+      console.log("Login success:", response.data);
+      navigate('/dashboard');
+    } catch (err) {
+      console.error("Login failed:", err.response?.data?.message || err.message);
+    }
+  };
 
-  try {
-    const response = await axios.post('http://localhost:5001/login', { email, password });
-    console.log("Login success:", response.data);
-    navigate('/');
-  } catch (err) {
-    console.error("Login failed:", err.response?.data?.message || err.message);
-  }
-};
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #222b18 0%, #11150c 100%)',
+        p: 3,
+        fontFamily: 'Inter, sans-serif',
+      }}
+    >
+      <Box
+        component="form"
+        onSubmit={handleLogin}
+        sx={{
+          width: '100%',
+          maxWidth: '450px',
+          p: 4,
+          borderRadius: '16px',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
+          backgroundColor: theme.palette.background.default,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 3,
+          border: `2px solid ${theme.palette.primary[300]}`,
+          position: 'relative',
+          overflow: 'hidden',
+          '&:hover': {
+            animation: `${borderGlow} 3s ease-in-out infinite`,
+          },
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: '-50%',
+            left: '-50%',
+            width: '200%',
+            height: '200%',
+            background: `linear-gradient(45deg, transparent, ${theme.palette.primary[400]}, transparent)`,
+            transform: 'rotate(45deg)',
+            opacity: 0.1,
+            transition: 'all 0.5s ease',
+          },
+          '&:hover::before': {
+            left: '100%',
+          },
+          transition: 'all 0.3s ease',
+        }}
+      >
+        <Typography
+          variant="h3"
+          component="h1"
+          sx={{
+            color: theme.palette.primary.main,
+            fontWeight: 700,
+            textAlign: 'center',
+            mb: 2,
+            fontFamily: 'inherit',
+            textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+            animation: `${floatAnimation} 4s ease-in-out infinite`,
+            letterSpacing: '1px',
+          }}
+        >
+          SYLPHONEX
+        </Typography>
 
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+        <Typography
+          variant="h5"
+          component="h2"
+          sx={{
+            color: theme.palette.text.primary,
+            textAlign: 'center',
+            mb: 3,
+            fontFamily: 'inherit',
+            fontWeight: 500,
+          }}
+        >
+          Welcome back to your dashboard
+        </Typography>
 
-        <button type="submit">Log In</button>
-      </form>
-        <p>Don't have an account?</p>
-        <Link>Sign up</Link>
-    </div>
+        <TextField
+          fullWidth
+          label="Email"
+          variant="outlined"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <EmailOutlined color="primary" />
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: theme.palette.primary[300],
+                borderWidth: '2px',
+              },
+              '&:hover fieldset': {
+                borderColor: theme.palette.primary[400],
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: theme.palette.primary[500],
+                boxShadow: `0 0 0 2px ${theme.palette.primary[200]}`,
+              },
+            },
+            '& .MuiInputLabel-root': {
+              color: theme.palette.text.secondary,
+              '&.Mui-focused': {
+                color: theme.palette.primary[500],
+              },
+            },
+            transition: 'all 0.3s ease',
+          }}
+        />
+
+        <TextField
+          fullWidth
+          label="Password"
+          variant="outlined"
+          type={showPassword ? 'text' : 'password'}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <LockOutlined color="primary" />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  edge="end"
+                  sx={{
+                    color: theme.palette.primary[500],
+                    '&:hover': {
+                      backgroundColor: theme.palette.primary[100],
+                    },
+                  }}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: theme.palette.primary[300],
+                borderWidth: '2px',
+              },
+              '&:hover fieldset': {
+                borderColor: theme.palette.primary[400],
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: theme.palette.primary[500],
+                boxShadow: `0 0 0 2px ${theme.palette.primary[200]}`,
+              },
+            },
+            '& .MuiInputLabel-root': {
+              color: theme.palette.text.secondary,
+              '&.Mui-focused': {
+                color: theme.palette.primary[500],
+              },
+            },
+            transition: 'all 0.3s ease',
+          }}
+        />
+
+        <Button
+          fullWidth
+          type="submit"
+          variant="contained"
+          size="large"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          sx={{
+            mt: 2,
+            py: 1.5,
+            backgroundColor: theme.palette.primary[500],
+            '&:hover': {
+              backgroundColor: theme.palette.primary[600],
+              transform: 'translateY(-2px)',
+              boxShadow: '0 6px 12px rgba(85, 107, 61, 0.4)',
+            },
+            transition: 'all 0.3s ease',
+            transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
+            boxShadow: '0 4px 8px rgba(85, 107, 61, 0.3)',
+            fontWeight: 600,
+            letterSpacing: '0.5px',
+            fontSize: '1rem',
+            borderRadius: '8px',
+          }}
+        >
+          Log In
+        </Button>
+
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, gap: 1 }}>
+          <Typography variant="body2" color="text.secondary" fontFamily="inherit">
+            Don't have an account?
+          </Typography>
+          <Link
+            component={RouterLink}
+            to="/signup"
+            sx={{
+              color: theme.palette.primary[500],
+              textDecoration: 'none',
+              fontWeight: '600',
+              fontFamily: 'Inter, sans-serif',
+              position: 'relative',
+              '&:hover': {
+                textDecoration: 'none',
+                '&::after': {
+                  width: '100%',
+                },
+              },
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                bottom: '-2px',
+                left: 0,
+                width: '0%',
+                height: '2px',
+                backgroundColor: theme.palette.primary[500],
+                transition: 'width 0.3s ease',
+              },
+            }}
+          >
+            Sign up
+          </Link>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 
-export default Login;
+export default function WrappedLogin() {
+  return (
+    <ThemeProvider theme={customTheme}>
+      <Login />
+    </ThemeProvider>
+  );
+}

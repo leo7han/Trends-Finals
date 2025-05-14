@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AddCustomerForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -36,6 +38,7 @@ const AddCustomerForm = () => {
       const response = await axios.post("http://localhost:5001/client/customers", formData);
       if (response.status === 201) {
         alert('User successfully created!');
+        navigate(-1);
         // Optionally reset form
       } else {
         throw new Error('Failed to create user.');
