@@ -1,4 +1,5 @@
 import React from "react";
+import { Avatar } from "@mui/material";
 import {
   Box,
   Divider,
@@ -105,6 +106,15 @@ const Sidebar = ({
   const navigate = useNavigate();
   const theme = useTheme();
 
+  const handleSettingsClick = () => {
+    navigate('/settings');
+  };
+
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser) {
+    user=(storedUser);
+  }
+
   useEffect(() => {
     setActive(pathname.substring(1));
   }, [pathname]);
@@ -206,15 +216,17 @@ const Sidebar = ({
           <Box position="absolute" bottom="2rem">
             <Divider />
             <FlexBetween textTransform="none" gap="1rem" m="1.5rem 2rem 0 3rem">
-              <Box
-                component="img"
-                alt="profile"
-                src={profileImage}
-                height="40px"
-                width="40px"
-                borderRadius="50%"
-                sx={{ objectFit: "cover" }}
-              />
+              <Avatar
+                              sx={{
+                                bgcolor: theme.palette.secondary.main,
+                                height: 32,
+                                width: 32,
+                                fontSize: "1rem", // Adjust font size to fit inside 32px
+                                fontWeight: "bold",
+                                }}
+                              >
+                              {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                            </Avatar>
               <Box textAlign="left">
                 <Typography
                   fontWeight="bold"
@@ -230,12 +242,14 @@ const Sidebar = ({
                   {user.occupation}
                 </Typography>
               </Box>
+              <IconButton onClick={handleSettingsClick}>
               <SettingsOutlined
                 sx={{
                   color: theme.palette.secondary[300],
                   fontSize: "25px ",
                 }}
               />
+              </IconButton>
             </FlexBetween>
           </Box>
         </Drawer>
