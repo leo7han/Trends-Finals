@@ -80,7 +80,7 @@ const Transactions = () => {
             borderTop: "none",
           },
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${theme.palette.secondary[800]} !important`,
+            color: `${theme.palette.secondary[200]} !important`,
           },
         }}
       >

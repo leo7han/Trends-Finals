@@ -79,7 +79,7 @@ const BreakdownChart = ({ isDashboard = false, choroplethColor = 'green' }) => {
           legends: {
             text: {
               fill: theme.palette.secondary[100],
-              fontSize: 25,
+              fontSize: 15,
             },
           },
           tooltip: {
@@ -124,7 +124,7 @@ const BreakdownChart = ({ isDashboard = false, choroplethColor = 'green' }) => {
             justify: false,
             translateX: isDashboard ? 20 : 0,
             translateY: isDashboard ? 50 : 56,
-            itemsSpacing: 85,
+            itemsSpacing: 35,
             itemWidth: 85,
             itemHeight: 18,
             itemTextColor: "#999",
