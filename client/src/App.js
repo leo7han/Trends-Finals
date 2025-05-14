@@ -21,6 +21,7 @@ import UpdateCustomer from "scenes/customersupdate";
 import Settings from "scenes/settings";
 import Login from "scenes/login";
 import Signup from "scenes/signup";
+import Intro from "scenes/intro";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -55,6 +56,7 @@ function App() {
             </Route>
              <Route path="/login" element={<Login />} />
              <Route path="/signup" element={<Signup />} />
+             <Route path="/intro" element ={<Intro />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
